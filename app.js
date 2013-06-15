@@ -12,6 +12,7 @@ var maxChips = function (chipValue, numChips, numPlayers) {
 	playerChips = (numChips - (numChips % numPlayers)) / numPlayers;
 	totalValue = playerChips * chipValue;
 
+	//DEBUG console.log(chipValue, playerChips, totalValue)
 	return [chipValue, playerChips, totalValue];
 };
 
@@ -188,6 +189,7 @@ var stackBuilder = function () {
 
 	console.log('\n*****************FINISH********************\n')
 
+	return sortedStack
 
 }
 
@@ -217,13 +219,17 @@ console.log(maxChips(100, 50, 9))
 //stackBuilder(10, 2, chip1, chip2, chip3, chip4, chip5);
 
 // Value passed in is 2400, needs to decrement
-stackBuilder(10, 2, chip1, chip2, chip3, chip4, chip5, chip6);
+//stackBuilder(10, 2, chip1, chip2, chip3, chip4, chip5, chip6);
 
 // Mixed up chip order to test sorting
-stackBuilder(10, 2, chip4, chip3, chip1, chip2, chip6, chip5);
+//stackBuilder(10, 2, chip4, chip3, chip1, chip2, chip6, chip5);
 
 // standard stack size
-stackBuilder(10, 1, chip4, chip3, chip1, chip2, chip6, chip5);
+var stack1 = stackBuilder(10, 1, chip4, chip3, chip1, chip2, chip6, chip5);
 
 // short stack size
-stackBuilder(10, 0, chip4, chip3, chip1, chip2, chip6, chip5);
+var stack2 = stackBuilder(10, 0, chip4, chip3, chip1, chip2, chip6, chip5);
+
+console.log(stack1)
+
+console.log(stack2)
