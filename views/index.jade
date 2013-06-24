@@ -6,59 +6,53 @@ block content
 			img(src='/images/stack-builder.png')
 	.container-fluid
 		.row-fluid
-			.span4
-				- // there should be a dropdown for stored chip values
-				- // choosing one should populate the images on screen.
-				table
-					td
-						img(src='images/chips/blue/top.png')
-						br
-						img(src='images/chips/blue/middle.png')
-						br
-						img(src='images/chips/blue/middle.png')
-						br
-						img(src='images/chips/blue/middle.png')
-						br
-						img(src='images/chips/blue/middle.png')
-						br
-						img(src='images/chips/blue/bottom.png')
-					td
-						img(src='images/chips/green/top.png')
-						br
-						img(src='images/chips/green/middle.png')
-						br
-						img(src='images/chips/green/middle.png')
-						br
-						img(src='images/chips/green/bottom.png')
-			.span4
-				img(src='images/chips/red/top.png')
-				br
-				img(src='images/chips/red/middle.png')
-				br
-				img(src='images/chips/red/middle.png')
-				br
-				img(src='images/chips/red/middle.png')
-				br
-				img(src='images/chips/red/middle.png')
-				br
-				img(src='images/chips/red/bottom.png')
-			.span4
-				img(src='images/chips/green/top.png')
-				br
-				img(src='images/chips/green/middle.png')
-				br
-				img(src='images/chips/green/middle.png')
-				br
-				img(src='images/chips/green/middle.png')
-				br
-				img(src='images/chips/green/middle.png')
-				br
-				img(src='images/chips/green/bottom.png')
+			.span3
 			.span6
-		.row-fluid
+				div.form
+					form#defineChip
+						fieldset
+								legend First, Define your Chips.
+								table
+									tr
+										td 
+											label Color
+											select#color(name='color')
+												option(value='red',selected) Red
+												option(value='black') Black
+												option(value='pink') Pink
+												option(value='brown') Brown
+												option(value='orange') Orange
+												option(value='green') Green
+												option(value='blue') Blue
+												option(value='purple') Purple
+												option(value='grey') Grey
+												option(value='white') White
+												option(value='yellow') Yellow
+										td
+											label Denomination
+											select#denom(name='denom')
+												option(value=5) .05
+												option(value=10) .10
+												option(value=25,selected) .25
+												option(value=50) .50
+												option(value=100) $1
+												option(value=200) $2
+												option(value=500) $5
+												option(value=1000) $10
+												option(value=2000) $20
+												option(value=5000) $50
+												option(value=10000) $100
+									tr
+										td
+											label How Many?
+											input#chipCount(type='text',placeholder='50')
+										td
+											button.btn.btn-primary(type='submit') Add Chip
+			.span3
+		.row-fluid#build
 			.span6
-				div#form
-					form
+				div.form
+					form(method='POST',action='/')
 						fieldset
 								legend Build your Stack
 								table(width='100%')
@@ -86,7 +80,73 @@ block content
 										label Players
 										input(type='text',placeholder='9')
 									td
-										button.btn(type='submit') Go!
-
-	h1= title
-	p Welcome to #{title}
+										button.btn.btn-success(type='submit') Go!
+		.row-fluid#collComplete
+			.span4
+			.span4
+				center
+					button.btn.btn-large.btn-success(type='submit') Collection Complete?
+				br
+			.span4
+		.row.chips
+		- // there should be a dropdown for stored chip values
+		- // choosing one should populate the images on screen.
+			.span12
+				.row
+					.span4
+						div
+							center#chip1
+								img(src='images/chips/white/single.png')
+						div
+							center#chip4
+								img(src='images/chips/white/single.png')
+					.span4
+						div
+							center#chip2
+								img(src='images/chips/white/single.png')
+						div
+							center#chip5
+								img(src='images/chips/white/single.png')
+					.span4
+						div
+							center#chip3
+								img(src='images/chips/white/single.png')
+						div
+							center#chip6
+								img(src='images/chips/white/single.png')
+		.row-fluid#build
+			.span3
+			.span6
+				div.form
+					form(method='POST',action='/')
+						fieldset
+								legend Next, Define your Stack.
+								table
+									tr
+										td
+											label Stack Type
+											select(name='stackType')
+												option(value=0) SHORT | 50BB
+												option(value=1,selected) STANDARD | 100BB
+												option(value=2) DEEP | 150BB
+										td
+											label Big Blind
+											select(name='bb')
+												option(value=5) .05
+												option(value=10,selected) .10
+												option(value=25) .25
+												option(value=50) .50
+												option(value=100) $1
+												option(value=200) $2
+												option(value=500) $5
+												option(value=1000) $10
+												option(value=2000) $20
+												option(value=5000) $50
+												option(value=10000) $100
+									tr
+										td
+											label Players
+											input(type='text',placeholder='9')
+										td
+											button.btn(type='submit') Go!
+			.span3

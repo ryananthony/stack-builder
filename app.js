@@ -32,6 +32,14 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 //app.get('/users', user.list);
 
+app.post('/', function (req,res,next) {
+	console.log(req.body);
+	res.locals.bb = req.body.bb
+	res.locals.stackType = req.body.stackType
+	console.log(res.locals);
+	next();
+}, routes.getStack);
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
