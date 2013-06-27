@@ -13,14 +13,18 @@ a {
 	width: 100%;
 }
 
-.chips img {
-	vertical-align:bottom;
+#chips img {
 	display:block;
 
 }
 
 #collComplete {
 	display:none;
+}
+
+#addChip {
+	padding: 20px;
+	width:300px;
 }
 
 #build {
