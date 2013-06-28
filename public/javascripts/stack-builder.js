@@ -54,6 +54,8 @@ $(document).ready(function() {
 
 		$('#collComplete').css('display','inline');
 
+		$('#addChip').popup('close');
+
 		return false; 
 	}); // end of defineChip submit function
 
@@ -103,6 +105,7 @@ $(document).ready(function() {
 
 		})
 		console.log('submit')
+		$('#build').css('display','none');
 		return false;
 	});
 
