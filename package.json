@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "stack-builder",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,6 +7,9 @@
   },
   "dependencies": {
     "express": "3.2.3",
-    "jade": "*"
+    "jade": "*",
+    "mathjs": "0.9.1",
+    "mocha": "1.12.0",
+    "should": "1.2.2"
   }
 }
