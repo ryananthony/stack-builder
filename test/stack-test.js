@@ -57,6 +57,12 @@ var lessChip3 = {
   count : 30
 };
 
+var realExample = [ { color: 'red', denom: 25, count: 7 },
+                    { color: 'orange', denom: '50', count: 5 },
+                    { color: 'black', denom: 100, count: 4 },
+                    { color: 'pink', denom: 300, count: 3 } ];
+
+
         /**************************
               Setup Definition
         **************************/
@@ -74,6 +80,8 @@ var setup2 = {
   stackType : 150,
   bb : 100
 };
+
+
 
 var noChips = [];
 var moreChips = [testChip1,testChip2,testChip3,testChip4,testChip5];
@@ -122,15 +130,23 @@ describe("Stack Builder Module", function() {
 
   describe("shave down chips", function() {
     it('sum of each chip\'s denom * count should equal expected stack total', function() {
-      var testTotal = 0;
+      var testTotal1 = 0;
       distroMore.sort(sb.sortDesc);
 
       sb.shaveChips(distroMore,setup1);
       for (var i in distroMore) {
-        testTotal = testTotal + (distroMore[i].count * distroMore[i].denom)
+        testTotal1 = testTotal1 + (distroMore[i].count * distroMore[i].denom)
       }
-      testTotal.should.eql(setup1.bb * setup1.stackType); 
+      testTotal1.should.eql(setup1.bb * setup1.stackType); 
 
+      // var testTotal2 = 0;
+      // realExample.sort(sb.sortDesc);
+
+      // sb.shaveChips(realExample,setup1);
+      // for (var i in realExample) {
+      //   testTotal2 = testTotal2 + (realExample[i].count * realExample[i].denom)
+      // }
+      // testTotal2.should.eql(setup1.bb * setup1.stackType); 
     });
   });
 

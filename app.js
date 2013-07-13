@@ -33,12 +33,11 @@ app.get('/', routes.index);
 //app.get('/users', user.list);
 
 app.post('/build', function (req,res,next) {
-	console.log(req.body);
+  //console.log(req);
+	//console.log(req.body);
   res.locals.chips = req.body.chips
-	res.locals.stackType = req.body.stackType
-  res.locals.bb = req.body.bb
-  res.locals.players = req.body.players
-	console.log(res.locals);
+	res.locals.setup = req.body.setup
+	//console.log(res.locals);
 	next();
 }, routes.getStack);
 

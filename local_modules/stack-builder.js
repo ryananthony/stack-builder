@@ -51,38 +51,55 @@ var sortDesc = function(a, b) {
 // ListOfChips Setup -> ListOfChips
 // produces a chiplist with most chips each player can have when distro'd evenly
 
-var distroChips = function(loc,setup) {
+var distroChips = function(loc,setup, callback) {
 
   for (var i=0;i<loc.length;i++) {
     loc[i].count = Math.floor(loc[i].count / setup.players);
   }
 
-  return loc;
+  if(callback) {
+    callback();
+  } else {
+  // DEBUG console.log(loc);
+    return loc;
+  }
+
 }
         /**************************
            Assign Denominations
         **************************/
 
-// ListOfChips Setup -> ListOfChip
+// ListOfChips Setup Callback -> ListOfChip
 // modifies list so all Chip Objects contain denominations
 
-var setDenoms = function(loc,setup) {
-  if (setup.bb % 2 === 0) {
+var setDenoms = function(loc,setup,callback) {
+  if (parseInt(setup.bb) % 2 === 0) {
     // DEBUG console.log('divisible');     // set loc[0] to half bb
     loc[0].denom = (setup.bb / 2);
-  } else {
+  } else if (parseInt(setup.bb) % 5 === 0) {
     // DEBUG console.log('not divisible'); 
-    loc[0].denom = (Math.floor(setup.bb / 2)); 
+    loc[0].denom = (Math.floor((setup.bb * 2) / 5)); //5->2, 25->10, 75->30 
+  } 
+
+  if (parseInt(loc[0].denom) === 0) {
+    loc[0].denom = parseInt(setup.bb);     // could not divide bb, so bb will be small blind
+    loc[1].denom = setup.bb * 2; 
+  } else {
+    loc[1].denom = parseInt(setup.bb);  // 2nd most chips is the Big Blind
   }
 
-  loc[1].denom = setup.bb;  // 2nd most chips is the Big Blind
+  
 
   for (var i=2;i<loc.length;i++) {
-    // look at modulo of bb
-    if(loc[i-1].denom === 10) { // for .05/.10 have a quarter 
-      loc[i].denom = 25;
-    } else if (loc[i-1].denom === 25) { // if .10/.25, skip the .50
+    if(i === 2 && loc[1].denom >= 5 && loc[1].denom <= 10) { // for .02/.05 and .05/.10, jump to a quarter a quarter 
+      loc[2].denom = 25;
+      continue;
+    }
+
+    if (loc[i-1].denom === 25) { // if .10/.25, skip the .50
       loc[i].denom = 100;
+    } else if (loc[i-1].denom === 100 && i >= 3) { // we have a few denoms before 100, so make a bigger jump
+      loc[i].denom = 250;
     } else if (loc[i-1].denom === 200) { // break the linear 00's
       loc[i].denom = 500;
     } else if (loc[i-1].denom === 2000) { // break the linear 000's
@@ -93,7 +110,12 @@ var setDenoms = function(loc,setup) {
   }
 
   // DEBUG console.log('end of setDenoms' + loc);
-  return loc;
+  if(callback) {
+    callback();
+  } else {
+  // DEBUG console.log(loc);
+    return loc;
+  }
 
 }
 
@@ -101,10 +123,10 @@ var setDenoms = function(loc,setup) {
               Validate Values
         **************************/
 
-// ListOfChips Setup -> Boolean
+// ListOfChips Setup Callback -> Boolean
 // checks that setup.bb times setup.stackType < the sum of each chips denom * count
 
-var enoughValue = function(loc,setup) {
+var enoughValue = function(loc,setup,callback) {
   var actual = 0;
   var expected = Math.ceil(setup.stackType * setup.bb);
 
@@ -115,20 +137,31 @@ var enoughValue = function(loc,setup) {
 
   // DEBUG console.log(actual);
   if(actual>expected) {
-    return true;
+    if(callback) {
+      callback();
+    } else {
+      return true;
+    }
+  }
+  
+  if(callback) {
+    callback();
+  } else {
+  // DEBUG console.log(loc);
+
+    return false;
   }
 
-  return false;
 }
 
         /**************************
               Shave Remainder
         **************************/
 
-// ListOfChips Setup -> ListOfChips
+// ListOfChips Setup Callback -> ListOfChips
 // takes a given sorted, validated listofchips and returns a listofchips equal to setup.bb * setup.stackType
 
-var shaveChips = function(loc,setup) {
+var shaveChips = function(loc,setup,callback) {
   
   var expected = (setup.bb * setup.stackType);
   var current = 0;
@@ -155,8 +188,12 @@ var shaveChips = function(loc,setup) {
 
   }
 
+  if(callback) {
+    callback();
+  } else {
   // DEBUG console.log(loc);
-  return loc;
+    return loc;
+  }
 }
 
 exports.sortAsc = sortAsc;

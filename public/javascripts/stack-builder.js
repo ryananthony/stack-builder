@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 		//chips.push();
 		var $postColor = $("select[name=color]").val(),
-				$postDenom = $("select[name=denom]").val(),
+				$postDenom = 0, // legacy $("select[name=denom]").val(),
 				$postCount = $("input[name=count]").val();
 
 		// console.log($postColor)
@@ -73,33 +73,33 @@ $(document).ready(function() {
 				$postBb = $("select[name=bb]").val(),
 				$postPlayers = $("input[name=players]").val();
 
-		$.post('/build', {chips : chips, stackType : $postStackType, bb : $postBb, players : $postPlayers} , function(data) {
+		$.post('/build', {chips : chips, setup : { stackType : $postStackType, bb : $postBb, players : $postPlayers} } , function(data) {
 
-			for (var chip in data.stack) {
+			for (var chip in data) {
 
 				var imageStack = '';
 
-				for (var i=0;i<data.stack[chip][2];i++) {
-					if (data.stack[chip][2] === 1) {
-						imageStack = '<img src = "images/chips/' + data.stack[chip][0] + '/single.png"><br />';
+				for (var i=0;i<data[chip][2];i++) {
+					if (data[chip][2] === 1) {
+						imageStack = '<img src = "images/chips/' + data[chip][0] + '/single.png"><br />';
 						break;
 					}
 					else if (i == 0) {
-						imageStack = imageStack + '<img src = "images/chips/' + data.stack[chip][0] + '/top.png"><br />';
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/top.png"><br />';
 					}
-					else if (i == (data.stack[chip][2] - 1)) {
-						imageStack = imageStack + '<img src = "images/chips/' + data.stack[chip][0] + '/bottom.png"><br />';
+					else if (i == (data[chip][2] - 1)) {
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/bottom.png"><br />';
 					}
 					else {
-						imageStack = imageStack + '<img src = "images/chips/' + data.stack[chip][0] + '/middle.png"><br />';
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/middle.png"><br />';
 					}
 				}
 
 				console.log(imageStack);
 
 				$('#chip' + chip).empty();
-				$('#chip' + chip).html(imageStack + '<h4>' + data.stack[chip][2] + ' at ' + data.stack[chip][1] + 
-																							'</h4><h3>For: ' + data.stack[chip][3] + '</h3>');
+				$('#chip' + chip).html(imageStack + '<h4>' + data[chip][2] + ' at ' + data[chip][1] + 
+																							'</h4><h3>For: ' + data[chip][3] + '</h3>');
 
 			}
 
