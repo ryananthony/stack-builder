@@ -13,9 +13,14 @@ a {
 	width: 100%;
 }
 
-#chips img {
+#chips {
 	display:block;
+  position:relative;
+}
 
+#chip0 img, #chip1 img, #chip2 img, #chip3 img, #chip4 img, #chip5 img {
+  padding:0 auto;
+  margin:0 auto;
 }
 
 #collComplete {

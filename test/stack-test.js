@@ -58,10 +58,19 @@ var lessChip3 = {
 };
 
 var realExample = [ { color: 'red', denom: 25, count: 7 },
-                    { color: 'orange', denom: '50', count: 5 },
                     { color: 'black', denom: 100, count: 4 },
+                    { color: 'orange', denom: '50', count: 5 },
                     { color: 'pink', denom: 300, count: 3 } ];
 
+var realCountSorted = [ { color: 'red', denom: 25, count: 7 },
+                        { color: 'orange', denom: '50', count: 5 },
+                        { color: 'black', denom: 100, count: 4 },
+                        { color: 'pink', denom: 300, count: 3 } ];
+
+var realDenomSorted = [ { color: 'pink', denom: 300, count: 3 },
+                        { color: 'black', denom: 100, count: 4 },
+                        { color: 'orange', denom: '50', count: 5 },
+                        { color: 'red', denom: 25, count: 7 } ];
 
         /**************************
               Setup Definition
@@ -89,14 +98,14 @@ var lessChips = [lessChip1,lessChip2,lessChip3];
 
 describe("Stack Builder Module", function() {
 
-	describe("chip sorter", function() {
+	describe("chip count sorter", function() {
     it('should return a sorted list in descending order', function() {
-      (lessChips.sort(sb.sortAsc)).should.eql([lessChip3,lessChip1,lessChip2]);
-      (moreChips.sort(sb.sortAsc)).should.eql([testChip5,testChip4,testChip1,testChip2,testChip3]);
+      (lessChips.sort(sb.sortCount)).should.eql([lessChip3,lessChip1,lessChip2]);
+      (moreChips.sort(sb.sortCount)).should.eql([testChip5,testChip4,testChip1,testChip2,testChip3]);
     });
     it('should NOT return the original list order', function() {
-      (lessChips.sort(sb.sortAsc)).should.not.be.eql([lessChip1,lessChip2,lessChip3]);
-      (lessChips.sort(sb.sortAsc)).should.not.be.eql([testChip1,testChip2,testChip3,testChip4,testChip5]);
+      (lessChips.sort(sb.sortCount)).should.not.be.eql([lessChip1,lessChip2,lessChip3]);
+      (lessChips.sort(sb.sortCount)).should.not.be.eql([testChip1,testChip2,testChip3,testChip4,testChip5]);
     });
 	});
 
@@ -125,6 +134,13 @@ describe("Stack Builder Module", function() {
     it('true if total value of chips greater than final stack value', function() {
       sb.enoughValue(distroMore,setup1).should.be.true;
       sb.enoughValue(distroLess,setup2).should.be.false;
+    });
+  });
+
+
+  describe("chip denom sorter", function() {
+    it('should return a sorted list in descending order', function() {
+      (realExample.sort(sb.sortDenom)).should.eql(realDenomSorted);
     });
   });
 

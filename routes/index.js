@@ -12,27 +12,30 @@ exports.index = function(req, res){
    POST to /build - Process jQuery Data
  *****************************************/
 
-exports.getStack = function(req, res){
+exports.getStack = function(req, res) {
 	console.log('unmodified stack:');
 	console.log(res.locals.chips);
-	sb.distroChips(res.locals.chips.sort(sb.sortAsc),res.locals.setup, function() {
+	sb.distroChips(res.locals.chips.sort(sb.sortCount),res.locals.setup, function() {
 		console.log('sorted by chip qty then distributed:');
 		console.log(res.locals.chips);
 		sb.setDenoms(res.locals.chips,res.locals.setup, function() { // with single chip submit got TypeError: Cannot set property 'denom' of undefined
 			console.log('set the denominations:');
 			console.log(res.locals.chips);
-			sb.enoughValue(res.locals.chips,res.locals.setup, function() {
-				// everything looks good at this point
-				// [ { color: 'red', 		denom: 5, 	count: 7 },
-				//   { color: 'red', 		denom: 10, 	count: 6 },
-				//   { color: 'orange', denom: 25, 	count: 5 },
-				//   { color: 'white', 	denom: 100, count: 5 },
-				//   { color: 'purple', denom: 250, count: 4 } ]
-				console.log('validated total value:');
-				console.log(res.locals.chips);
-				res.send(res.locals.chips);
-				// res.send(sb.shaveChips(res.locals.chips.sort(sb.sortDesc), res.locals.setup));
-			});
+			console.log(res.locals.setup);
+			if (sb.enoughValue(res.locals.chips,res.locals.setup)) {
+				console.log('sorted desc:');
+				var sorted = res.locals.chips.sort(sb.sortDenom);
+				console.log(sorted);
+				sb.shaveChips(sorted, res.locals.setup, function() {
+					console.log('validated total value:');
+					console.log(sorted);
+					//res.send(res.locals.chips);
+					res.send(sorted);
+				});			
+			} else {
+				res.send(false);
+			}
+
 		});
 	});
-}
+};

@@ -22,10 +22,10 @@ var Math = require('mathjs');
         **************************/
 
 // Object Object -> Integer
-// produces decending and ascending lists sorted by each chip's 'count' property
+// produces decending list by each chip's 'count' property
 //  - uses built-in 'sort' method.
 
-var sortAsc = function(a, b) {
+var sortCount = function(a, b) {
   if (a.count < b.count) {
     return 1;
   } else if (a.count > b.count) {
@@ -35,10 +35,14 @@ var sortAsc = function(a, b) {
   }
 }
 
-var sortDesc = function(a, b) {
-  if (a.count > b.count) {
+// Object Object -> Integer
+// produces decending list by each chip's 'denom' property
+//  - uses built-in 'sort' method.
+
+var sortDenom = function(a, b) {
+  if (a.denom < b.denom) {
     return 1;
-  } else if (a.count < b.count) {
+  } else if (a.denom > b.denom) {
     return -1;
   } else {
     return 0;
@@ -123,10 +127,10 @@ var setDenoms = function(loc,setup,callback) {
               Validate Values
         **************************/
 
-// ListOfChips Setup Callback -> Boolean
+// ListOfChips Setup -> ListOfChips
 // checks that setup.bb times setup.stackType < the sum of each chips denom * count
 
-var enoughValue = function(loc,setup,callback) {
+var enoughValue = function(loc,setup) {
   var actual = 0;
   var expected = Math.ceil(setup.stackType * setup.bb);
 
@@ -137,21 +141,11 @@ var enoughValue = function(loc,setup,callback) {
 
   // DEBUG console.log(actual);
   if(actual>expected) {
-    if(callback) {
-      callback();
-    } else {
       return true;
+    } else {
+      return false;
     }
-  }
   
-  if(callback) {
-    callback();
-  } else {
-  // DEBUG console.log(loc);
-
-    return false;
-  }
-
 }
 
         /**************************
@@ -196,8 +190,8 @@ var shaveChips = function(loc,setup,callback) {
   }
 }
 
-exports.sortAsc = sortAsc;
-exports.sortDesc = sortDesc;
+exports.sortCount = sortCount;
+exports.sortDenom = sortDenom;
 exports.distroChips = distroChips;
 exports.setDenoms = setDenoms;
 exports.enoughValue = enoughValue;
