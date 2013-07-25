@@ -37,7 +37,7 @@ app.post('/build', function (req,res,next) {
 	//console.log(req.body);
   res.locals.chips = req.body.chips
 	res.locals.setup = req.body.setup
-	//console.log(res.locals);
+
 	next();
 }, routes.getStack);
 

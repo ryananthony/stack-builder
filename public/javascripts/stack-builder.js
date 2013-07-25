@@ -75,31 +75,33 @@ $(document).ready(function() {
 
 		$.post('/build', {chips : chips, setup : { stackType : $postStackType, bb : $postBb, players : $postPlayers} } , function(data) {
 
+			console.log(data);
+
 			for (var chip in data) {
 
 				var imageStack = '';
 
-				for (var i=0;i<data[chip][2];i++) {
-					if (data[chip][2] === 1) {
-						imageStack = '<img src = "images/chips/' + data[chip][0] + '/single.png"><br />';
+				for (var i=0;i<data[chip].count;i++) {
+					if (data[chip].count === 1) {
+						imageStack = '<img src = "images/chips/' + data[chip].color + '/single.png"><br />';
 						break;
 					}
 					else if (i == 0) {
-						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/top.png"><br />';
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip].color + '/top.png"><br />';
 					}
-					else if (i == (data[chip][2] - 1)) {
-						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/bottom.png"><br />';
+					else if (i == (data[chip].count - 1)) {
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip].color + '/bottom.png"><br />';
 					}
 					else {
-						imageStack = imageStack + '<img src = "images/chips/' + data[chip][0] + '/middle.png"><br />';
+						imageStack = imageStack + '<img src = "images/chips/' + data[chip].color + '/middle.png"><br />';
 					}
 				}
 
 				console.log(imageStack);
 
 				$('#chip' + chip).empty();
-				$('#chip' + chip).html(imageStack + '<h4>' + data[chip][2] + ' at ' + data[chip][1] + 
-																							'</h4><h3>For: ' + data[chip][3] + '</h3>');
+				$('#chip' + chip).html(imageStack + '<h4>' + data[chip].count + ' at ' + data[chip].denom + 
+																							'</h4><h3>For: ' + (data[chip].denom * data[chip].count)  + '</h3>');
 
 			}
 

@@ -16,7 +16,7 @@ exports.getStack = function(req, res){
 	console.log('unmodified stack:');
 	console.log(res.locals.chips);
 	sb.distroChips(res.locals.chips.sort(sb.sortAsc),res.locals.setup, function() {
-		console.log('sorted and distributed stack:');
+		console.log('sorted by chip qty then distributed:');
 		console.log(res.locals.chips);
 		sb.setDenoms(res.locals.chips,res.locals.setup, function() { // with single chip submit got TypeError: Cannot set property 'denom' of undefined
 			console.log('set the denominations:');
@@ -30,16 +30,8 @@ exports.getStack = function(req, res){
 				//   { color: 'purple', denom: 250, count: 4 } ]
 				console.log('validated total value:');
 				console.log(res.locals.chips);
-				sb.shaveChips(res.locals.chips.sort(sb.sortDesc),res.locals.setup, function() {
-					// sorting strangely right now... also breaking the count
-					// [ { color: 'purple', denom: 250, count: 0 },
-					//   { color: 'orange', denom: 25, 	count: 0 },
-					//   { color: 'white', 	denom: 100, count: 0 },
-					//   { color: 'red', 		denom: 10, 	count: 0 },
-					//   { color: 'red', 		denom: 5, 	count: 2 } ]
-					console.log('this is what we send to jQuery:');
-					res.send(res.locals.chips);
-				});
+				res.send(res.locals.chips);
+				// res.send(sb.shaveChips(res.locals.chips.sort(sb.sortDesc), res.locals.setup));
 			});
 		});
 	});
