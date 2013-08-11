@@ -27,17 +27,6 @@ $(document).ready(function() {
 
 		var chipImage = '<img src = "images/chips/' + $postColor + '/single.png"><br />';		
 
-		// generate a prettified dollar amounts for the screen
-		var chipValue = '$' + (parseInt($postDenom) / 100);								// round to 2 places
-		var totalValue = '$' + ((parseInt($postDenom) / 100) * $postCount).toFixed(2);
-
-		//console.log(chipValue.substring((chipValue.length -3),(chipValue.length -2)));
-
-		// add zero if there's only 1 number after the decimal
-		if ( (chipValue.search('.') != -1) && (chipValue.substring((chipValue.length -3),(chipValue.length -2)) != '.') ) {
-			chipValue = chipValue + '0';
-		}
-
 		var newChip = {
 			color: $postColor,
 			denom: $postDenom,
@@ -46,13 +35,20 @@ $(document).ready(function() {
 
 		chips.push(newChip);
 
-		$('#chip' + (chips.length -1).toString()).html(chipImage + '<h4>' + $postCount + ' at ' + chipValue + 
-																							'</h4><h3>For: ' + totalValue + '</h3>');
+		if (chips.length < 3) {
+			$('#chipsNeeded').html('<center><h4>Please add ' + (3 - chips.length) + ' more chips to your collection.</h4></center><br />');
+		} else {
+			$('#chipsNeeded').css('display','none');
+		}
+
+		$('#chip' + (chips.length -1).toString()).html(chipImage + '<h3>Count: ' + $postCount + '</h3>');
 
 		console.log(newChip);
 		console.log(chips);
 
-		$('#collComplete').css('display','inline');
+		if (chips.length > 2) {
+			$('#collComplete').css('display','inline');
+		}
 
 		$('#addChip').popup('close');
 
@@ -72,6 +68,20 @@ $(document).ready(function() {
 		var $postStackType = $("select[name=stackType]").val(),
 				$postBb = $("select[name=bb]").val(),
 				$postPlayers = $("input[name=players]").val();
+
+		var chipMinimum = 30.
+				maxChipsPossible = 0;
+
+		for (var chip in chips) {
+			maxChipsPossible = maxChipsPossible + parseInt(chips[chip].count);
+		}
+
+		console.log('total possible = ' + maxChipsPossible);
+
+		if ( (maxChipsPossible / parseInt($postPlayers)) < chipMinimum) {
+			alert('You will need more chips for ' + $postPlayers + ' players.');
+			return false;
+		}
 
 		$.post('/build', {chips : chips, setup : { stackType : $postStackType, bb : $postBb, players : $postPlayers} } , function(data) {
 
@@ -101,7 +111,7 @@ $(document).ready(function() {
 
 				$('#chip' + chip).empty();
 				$('#chip' + chip).html(imageStack + '<h4>' + data[chip].count + ' at ' + data[chip].denom + 
-																							'</h4><h3>For: ' + (data[chip].denom * data[chip].count)  + '</h3>');
+																'</h4><h3>For: ' + (data[chip].denom * data[chip].count)  + '</h3>');
 
 			}
 

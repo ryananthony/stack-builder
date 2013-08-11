@@ -28,20 +28,6 @@ block content
 										option(value='grey') Grey
 										option(value='white') White
 										option(value='yellow') Yellow
-						.ui-block-b
-									label Denomination
-									select#denom(name='denom')
-										option(value=5) .05
-										option(value=10) .10
-										option(value=25,selected) .25
-										option(value=50) .50
-										option(value=100) $1
-										option(value=200) $2
-										option(value=500) $5
-										option(value=1000) $10
-										option(value=2000) $20
-										option(value=5000) $50
-										option(value=10000) $100
 					label(for='count') How Many?
 					input#chipCount(type='range',name='count',value='50',min='0',max='300',step='1')
 					button(type='submit',data-theme='b') Add Chip
@@ -76,12 +62,12 @@ block content
 								td
 									button.btn.btn-success(type='submit') Go!
 			div#collComplete
-					center
-						button.btn.btn-large.btn-success(type='submit') Collection Complete?
-					br
+				center
+					button.btn.btn-large.btn-success(type='submit') Collection Complete?
+				br
+			div#chipsNeeded
+				- //this is the nofication for the number of chips still needed
 			div#chips.ui-grid-b
-			- // there should be a dropdown for stored chip values
-			- // choosing one should populate the images on screen.
 				.ui-block-a
 					center#chip0
 						- //img(src='images/chips/white/single.png')

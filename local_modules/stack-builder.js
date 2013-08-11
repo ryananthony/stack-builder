@@ -36,10 +36,25 @@ var sortCount = function(a, b) {
 }
 
 // Object Object -> Integer
+// produces ascending list by each chip's 'denom' property
+// this is for the visual stack returning to jQuery
+//  - uses built-in 'sort' method.
+
+var sortDenomAsc = function(a, b) {
+  if (a.denom > b.denom) {
+    return 1;
+  } else if (a.denom < b.denom) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+// Object Object -> Integer
 // produces decending list by each chip's 'denom' property
 //  - uses built-in 'sort' method.
 
-var sortDenom = function(a, b) {
+var sortDenomDesc = function(a, b) {
   if (a.denom < b.denom) {
     return 1;
   } else if (a.denom > b.denom) {
@@ -77,17 +92,33 @@ var distroChips = function(loc,setup, callback) {
 // modifies list so all Chip Objects contain denominations
 
 var setDenoms = function(loc,setup,callback) {
-  if (parseInt(setup.bb) % 2 === 0) {
-    // DEBUG console.log('divisible');     // set loc[0] to half bb
-    loc[0].denom = (setup.bb / 2);
-  } else if (parseInt(setup.bb) % 5 === 0) {
+
+  console.log(loc.length);
+
+  if ( (parseInt(setup.bb) % 2 === 0) &&
+        (loc.length > 3) ) {
+      loc[0].denom = (setup.bb / 2);    // if evenly divisible and 4 or more chips,
+                                        // we set loc[0] denomination to half bb
+         
+  } else if ( (parseInt(setup.bb) % 5 === 0) &&
+              (loc.length > 3) ) {
     // DEBUG console.log('not divisible'); 
     loc[0].denom = (Math.floor((setup.bb * 2) / 5)); //5->2, 25->10, 75->30 
   } 
 
+  console.log('loc[0] denom = ' + loc[0].denom);
+
+  // if we get here and BB is still not set...
   if (parseInt(loc[0].denom) === 0) {
-    loc[0].denom = parseInt(setup.bb);     // could not divide bb, so bb will be small blind
-    loc[1].denom = setup.bb * 2; 
+
+    loc[0].denom = parseInt(setup.bb);   // if we didn't assign denom yet to the 
+                                         // first chip, bb will be small blind.
+    if (loc.length < 4) {
+      loc[1].denom = setup.bb * 2.5;    // this will not work - 25 times 2 is 62.5
+    } else                              // will need while loop to find best even value
+    {
+      loc[1].denom = setup.bb * 2; // bb is double BB if more than 3 chips total 
+    }
   } else {
     loc[1].denom = parseInt(setup.bb);  // 2nd most chips is the Big Blind
   }
@@ -191,7 +222,8 @@ var shaveChips = function(loc,setup,callback) {
 }
 
 exports.sortCount = sortCount;
-exports.sortDenom = sortDenom;
+exports.sortDenomDesc = sortDenomDesc;
+exports.sortDenomAsc = sortDenomAsc;
 exports.distroChips = distroChips;
 exports.setDenoms = setDenoms;
 exports.enoughValue = enoughValue;

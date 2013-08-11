@@ -24,17 +24,16 @@ exports.getStack = function(req, res) {
 			console.log(res.locals.setup);
 			if (sb.enoughValue(res.locals.chips,res.locals.setup)) {
 				console.log('sorted desc:');
-				var sorted = res.locals.chips.sort(sb.sortDenom);
-				console.log(sorted);
+				var sorted = res.locals.chips.sort(sb.sortDenomDesc); 
+				console.log(sorted);                                  
 				sb.shaveChips(sorted, res.locals.setup, function() {
-					console.log('validated total value:');
-					console.log(sorted);
-					//res.send(res.locals.chips);
-					res.send(sorted);
+					console.log('validated total value:');              // 50-42-57 counts w/ 4 players
+					console.log(sorted);																// still blowing up here...
+					res.send(sorted.sort(sb.sortDenomAsc)); 
 				});			
 			} else {
-				res.send(false);
-			}
+				res.send(false);  //should render the homepage with an error if failure
+			}                   //how do we check error?
 
 		});
 	});
